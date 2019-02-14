@@ -20,6 +20,7 @@ FTPPUTImageProcessor::~FTPPUTImageProcessor() {
 int FTPPUTImageProcessor::ProcessImage()
 {
 	LOGD("sending image");
-	system("ftpput 192.168.31.202 screencap.png");
+	int ret = system("ftpput 192.168.31.202 screencap.png");
+	syslog(LOG_DEBUG, "ftpput returns %d", ret);
 	return 0;
 }

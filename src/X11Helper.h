@@ -23,6 +23,7 @@ private:
 	XWindowAttributes rootWindowAttr;
 	Window rootWindowDrawable;
 	XImage *pXImg;
+	bool isOpened;
 public:
 	X11Helper();
 	bool OpenDisplay();

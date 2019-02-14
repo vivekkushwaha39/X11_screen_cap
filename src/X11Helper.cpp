@@ -27,6 +27,7 @@ X11Helper::X11Helper() {
 	XCloseDisplay(display);*/
 	display = NULL;
 	pXImg = NULL;
+	isOpened = false;
 }
 
 X11Helper::~X11Helper()
@@ -42,12 +43,13 @@ bool X11Helper::OpenDisplay()
 		syslog(LOG_DEBUG, "display is already opened");
 		return true;
 	}
-
-	bool isOpened = true;
+	syslog(LOG_DEBUG, "opening display");
+	isOpened = true;
 	display = XOpenDisplay(NULL);
 
 	if ( display == NULL )
 	{
+		syslog(LOG_DEBUG, "Unable to open display");
 		isOpened = false;
 	}
 	else
@@ -56,22 +58,28 @@ bool X11Helper::OpenDisplay()
 		XGetWindowAttributes(display,rootWindowDrawable, &rootWindowAttr);
 	}
 
+	syslog(LOG_DEBUG, "Display is %d", display);
 	return isOpened;
 }
 
 bool X11Helper::CaptureScreen()
 {
+
+	if ( display == NULL )
+	{
+		syslog(LOG_DEBUG, "display is null not able to capture");
+	}
+
 	bool isCaptured = true;
-	if ( pXImg == NULL )
+	if ( pXImg !=  NULL )
 	{
-		pXImg = XGetImage(display, rootWindowDrawable, 0, 0, rootWindowAttr.width, rootWindowAttr.height,
-				AllPlanes,ZPixmap );
-		isCaptured = true;
+		XFree(pXImg);
 	}
-	else
-	{
-		// TODO: vivekk4: delete screen-cap pointer
-	}
+
+	pXImg = XGetImage(display, rootWindowDrawable, 0, 0, rootWindowAttr.width, rootWindowAttr.height,
+			AllPlanes,ZPixmap );
+	isCaptured = true;
+
 	return isCaptured;
 }
 
@@ -81,6 +89,7 @@ bool X11Helper::SaveAsPng(string fileName)
 	if ( pXImg == NULL )
 	{
 		// Screen was not captured need to allocate pXimg first
+		syslog(LOG_DEBUG, "image is null not saving");
 		return false;
 	}
 
@@ -183,9 +192,12 @@ int X11Helper::GetStatus()
 {
 	int status = UNINITIALIZED;
 
-	if ( this->display != NULL )
+	if ( display != NULL )
+	{
 		status = DISPLAY_OPENED;
+	}
 
+	syslog(LOG_DEBUG, "status is %d", status);
 	return status;
 }
 

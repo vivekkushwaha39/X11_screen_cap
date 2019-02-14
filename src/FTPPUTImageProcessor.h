@@ -14,7 +14,7 @@ class FTPPUTImageProcessor: public IScrenProcessor  {
 public:
 	FTPPUTImageProcessor();
 	virtual ~FTPPUTImageProcessor();
-	virtual int ProcessImage();
+	int ProcessImage();
 };
 
 #endif /* SRC_FTPPUTIMAGEPROCESSOR_H_ */

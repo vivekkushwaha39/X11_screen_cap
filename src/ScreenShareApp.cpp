@@ -10,17 +10,17 @@ using namespace std;
 ScreenShareApp::ScreenShareApp()
 {
 	isCapturingEnabled = false;
+	x11Helper.OpenDisplay();
+	IScrenProcessor *pro = new FTPPUTImageProcessor();
+	processors.push_back(pro);
 }
 
 ScreenShareApp::~ScreenShareApp()
 {
-	this->x11Helper.OpenDisplay();
 }
 
 void ScreenShareApp::StartCapturing()
 {
-	if ( x11Helper.GetStatus() == UNINITIALIZED )
-		return;
 
 	isCapturingEnabled = true;
 	syslog(LOG_DEBUG, "entering in while loop");
@@ -29,6 +29,7 @@ void ScreenShareApp::StartCapturing()
 		x11Helper.CaptureScreen();
 		x11Helper.SaveAsPng();
 		CallImageProcessors();
+		sleep(2);
 	}
 	syslog(LOG_DEBUG, "getting out from while loop");
 	x11Helper.CloseDisplay();
@@ -39,7 +40,7 @@ void ScreenShareApp::CallImageProcessors()
 	for( vector<IScrenProcessor *>::iterator it = processors.begin();
 			it != processors.end(); it++)
 	{
-		if ( (*it) == NULL)
+		if ( (*it) != NULL)
 			(*it)->ProcessImage();
 	}
 }

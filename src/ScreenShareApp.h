@@ -8,11 +8,12 @@
 #ifndef SRC_SCREENSHAREAPP_H_
 #define SRC_SCREENSHAREAPP_H_
 #include "X11Helper.h"
-
+#include <stdlib.h>
 #include <iterator>
 #include <vector>
-
 #include "IScrenProcessor.h"
+#include "FTPPUTImageProcessor.h"
+
 class ScreenShareApp {
 private:
 	bool isCapturingEnabled;
