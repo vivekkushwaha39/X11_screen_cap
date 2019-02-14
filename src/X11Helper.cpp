@@ -7,6 +7,10 @@
 
 #include "X11Helper.h"
 #include <png.h>
+using namespace std;
+
+
+
 X11Helper::X11Helper() {
 	/*display = XOpenDisplay(NULL);
 	Window root = DefaultRootWindow(display);
@@ -66,13 +70,115 @@ bool X11Helper::CaptureScreen()
 }
 
 
-bool X11Helper::SaveAsPng(XImage *img)
+bool X11Helper::SaveAsPng(string fileName)
 {
+	if ( pXImg == NULL )
+	{
+		// Screen was not captured need to allocate pXimg first
+		return false;
+	}
+
+	if ( fileName.compare("") == 0 )
+		fileName = "screencap.png";
+
 	bool isSaved = false;
 
-	if( img != NULL )
+	if( pXImg != NULL )
 	{
+		unsigned long red_mask = pXImg->red_mask;
+		unsigned long green_mask = pXImg->green_mask;
+		unsigned long blue_mask = pXImg->blue_mask;
+
+
+		cout<<"Image mask "<<pXImg->bits_per_pixel;
+
+		// Initialize PNG
+		png_structp pngPtr = NULL;
+		png_infop pngInfoPtr = NULL;
+		pngPtr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+
+
+
+
+		if ( pngPtr == NULL )
+		{
+			// Unable to allocate mem
+			return false;
+		}
+		pngInfoPtr = png_create_info_struct(pngPtr);
+
+
+		if (setjmp(png_jmpbuf(pngPtr)))
+		{
+			png_destroy_write_struct(&pngPtr, &pngInfoPtr);
+			return false;
+		}
+
+
+		FILE *outFile = fopen(fileName.c_str(), "wb");
+
+		png_set_IHDR (pngPtr, pngInfoPtr, rootWindowAttr.width, rootWindowAttr.height,
+		     8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
+		     PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+
+
+		png_init_io(pngPtr, outFile);
+
+		char *title = "ScreenShot";
+		png_text pngText;
+		pngText.compression = PNG_ITXT_COMPRESSION_NONE;
+		pngText.key = "Title";
+		pngText.text = title;
+		png_set_text(pngPtr, pngInfoPtr, &pngText, 1);
+		png_write_info(pngPtr, pngInfoPtr);
+
+
+		png_bytepp png_row_col = (png_bytepp) png_malloc(pngPtr, rootWindowAttr.height * sizeof (png_bytep));
+		for ( int x = 0; x < rootWindowAttr.height; x++ )
+		{
+			png_bytep png_row = (png_bytep)png_malloc (pngPtr, sizeof (uint8_t) * rootWindowAttr.width * 24 );
+
+			png_row_col[x] = png_row;
+
+			for ( int y = 0 ; y <rootWindowAttr.width; y++)
+			{
+
+				unsigned long pixel = XGetPixel(pXImg,y,x);
+				unsigned char blue = pixel & blue_mask;
+				unsigned char green = (pixel & green_mask) >> 8;
+				unsigned char red = (pixel & red_mask) >> 16;
+
+				png_byte *ptr = &(png_row[y*3]);
+				ptr[0] = red;
+				ptr[1] = green;
+				ptr[2] = blue;
+			}
+
+		}
+		png_set_rows(pngPtr, pngInfoPtr, png_row_col);
+		png_write_png(pngPtr, pngInfoPtr, PNG_TRANSFORM_IDENTITY, NULL);
+
+		for ( int y = 0; y < rootWindowAttr.height; y++ )
+		{
+			png_free (pngPtr, png_row_col[y]);
+		}
+		png_free (pngPtr, png_row_col);
+
+		fclose (outFile);
+		if (pngInfoPtr != NULL) png_free_data (pngPtr, pngInfoPtr, PNG_FREE_ALL, -1);
+		if (pngPtr != NULL) png_destroy_write_struct (&pngPtr, (png_infopp)NULL);
 
 	}
 	return isSaved;
+}
+
+
+int X11Helper::GetStatus()
+{
+	int status = UNINITIALIZED;
+
+	if ( this->display != NULL )
+		status = DISPLAY_OPENED;
+
+	return status;
 }

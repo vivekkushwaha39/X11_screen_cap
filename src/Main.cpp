@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <stdint.h>
 using namespace std;
-int main(int argc, char **argv) {
+/*int main(int argc, char **argv) {
 	Display * display1 = NULL;
 	XWindowAttributes  winAttribute;
 
@@ -115,5 +115,10 @@ int main(int argc, char **argv) {
 
 	return 0;
 
-}
+}*/
 
+
+int main(int argc, char **argv)
+{
+
+}

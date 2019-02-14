@@ -9,6 +9,14 @@
 #define SRC_X11HELPER_H_
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <iostream>
+#include <stdint.h>
+#include <syslog.h>
+
+// STATUS CODES
+#define UNINITIALIZED 0x0
+#define DISPLAY_OPENED 0x1
+
 class X11Helper {
 private:
 	Display *display;
@@ -20,7 +28,8 @@ public:
 	bool OpenDisplay();
 	bool CloseDisplay();
 	bool CaptureScreen();
-	bool SaveAsPng(XImage *);
+	bool SaveAsPng(std::string = "screencap.png");
+	int GetStatus();
 	virtual ~X11Helper();
 
 };
