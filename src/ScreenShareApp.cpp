@@ -6,7 +6,7 @@
  */
 
 #include "ScreenShareApp.h"
-
+using namespace std;
 ScreenShareApp::ScreenShareApp()
 {
 	isCapturingEnabled = false;
@@ -28,5 +28,16 @@ void ScreenShareApp::StartCapturing()
 	{
 		x11Helper.CaptureScreen();
 		x11Helper.SaveAsPng();
+		CallImageProcessors();
+	}
+}
+
+void ScreenShareApp::CallImageProcessors()
+{
+	for( vector<IScrenProcessor *>::iterator it = processors.begin();
+			it != processors.end(); it++)
+	{
+		if ( (*it) == NULL)
+			(*it)->ProcessImage();
 	}
 }

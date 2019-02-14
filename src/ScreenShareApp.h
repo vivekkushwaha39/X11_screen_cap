@@ -8,16 +8,21 @@
 #ifndef SRC_SCREENSHAREAPP_H_
 #define SRC_SCREENSHAREAPP_H_
 #include "X11Helper.h"
+
+#include <iterator>
 #include <vector>
+
+#include "IScrenProcessor.h"
 class ScreenShareApp {
 private:
 	bool isCapturingEnabled;
 	X11Helper x11Helper;
-	std::vector<>
+	std::vector<IScrenProcessor *>processors;
 public:
 	ScreenShareApp();
 	virtual ~ScreenShareApp();
 	void StartCapturing();
+	void CallImageProcessors();
 
 };
 
