@@ -11,7 +11,10 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
+#include <signal.h>
+
 #include "ScreenShareApp.h"
+
 using namespace std;
 /*int main(int argc, char **argv) {
 	Display * display1 = NULL;
@@ -118,10 +121,18 @@ using namespace std;
 
 }*/
 
-
+void SignalHandler(int);
+ScreenShareApp app;
 int main(int argc, char **argv)
 {
-	ScreenShareApp app;
+	signal(SIGILL | SIGABRT, SignalHandler);
 	app.StartCapturing();
+
 	return 0;
+}
+
+void SignalHandler(int data)
+{
+	syslog(LOG_DEBUG, "got sigint");
+	app.Signal(data);
 }

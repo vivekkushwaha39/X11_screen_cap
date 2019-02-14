@@ -65,6 +65,7 @@ bool X11Helper::OpenDisplay()
 bool X11Helper::CaptureScreen()
 {
 
+	syslog(LOG_DEBUG, "capturing screen");
 	if ( display == NULL )
 	{
 		syslog(LOG_DEBUG, "display is null not able to capture");
@@ -80,12 +81,14 @@ bool X11Helper::CaptureScreen()
 			AllPlanes,ZPixmap );
 	isCaptured = true;
 
+	syslog(LOG_DEBUG, "end capturing screen");
 	return isCaptured;
 }
 
 
 bool X11Helper::SaveAsPng(string fileName)
 {
+	syslog(LOG_DEBUG, "saving screen");
 	if ( pXImg == NULL )
 	{
 		// Screen was not captured need to allocate pXimg first
@@ -184,6 +187,7 @@ bool X11Helper::SaveAsPng(string fileName)
 		if (pngPtr != NULL) png_destroy_write_struct (&pngPtr, (png_infopp)NULL);
 
 	}
+	syslog(LOG_DEBUG, "end saving screen");
 	return isSaved;
 }
 

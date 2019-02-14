@@ -44,3 +44,10 @@ void ScreenShareApp::CallImageProcessors()
 			(*it)->ProcessImage();
 	}
 }
+
+
+void ScreenShareApp::Signal(int data)
+{
+	syslog(LOG_DEBUG,  "clearing screen data");
+	x11Helper.CloseDisplay();
+}

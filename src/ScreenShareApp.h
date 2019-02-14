@@ -24,6 +24,7 @@ public:
 	virtual ~ScreenShareApp();
 	void StartCapturing();
 	void CallImageProcessors();
+	void Signal(int);
 
 };
 
