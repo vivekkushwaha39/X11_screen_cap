@@ -14,7 +14,7 @@ ScreenShareApp::ScreenShareApp()
 
 ScreenShareApp::~ScreenShareApp()
 {
-
+	this->x11Helper.OpenDisplay();
 }
 
 void ScreenShareApp::StartCapturing()
@@ -23,13 +23,15 @@ void ScreenShareApp::StartCapturing()
 		return;
 
 	isCapturingEnabled = true;
-
+	syslog(LOG_DEBUG, "entering in while loop");
 	while( isCapturingEnabled )
 	{
 		x11Helper.CaptureScreen();
 		x11Helper.SaveAsPng();
 		CallImageProcessors();
 	}
+	syslog(LOG_DEBUG, "getting out from while loop");
+	x11Helper.CloseDisplay();
 }
 
 void ScreenShareApp::CallImageProcessors()

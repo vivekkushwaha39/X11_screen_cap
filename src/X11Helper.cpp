@@ -37,6 +37,12 @@ X11Helper::~X11Helper()
 
 bool X11Helper::OpenDisplay()
 {
+	if ( GetStatus() == DISPLAY_OPENED )
+	{
+		syslog(LOG_DEBUG, "display is already opened");
+		return true;
+	}
+
 	bool isOpened = true;
 	display = XOpenDisplay(NULL);
 
@@ -181,4 +187,14 @@ int X11Helper::GetStatus()
 		status = DISPLAY_OPENED;
 
 	return status;
+}
+
+bool X11Helper::CloseDisplay()
+{
+	if ( pXImg != NULL )
+		XFree(pXImg);
+	if ( display != NULL )
+		XFree(display);
+
+	return true;
 }

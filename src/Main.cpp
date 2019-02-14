@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
+#include "ScreenShareApp.h"
 using namespace std;
 /*int main(int argc, char **argv) {
 	Display * display1 = NULL;
@@ -120,5 +121,7 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-
+	ScreenShareApp app;
+	app.StartCapturing();
+	return 0;
 }
