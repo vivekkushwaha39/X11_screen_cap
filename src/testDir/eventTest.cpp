@@ -98,9 +98,19 @@
 #define EVENT_CODE_X    ABS_X
 #define EVENT_CODE_Y    ABS_Y
 
-
-void sendTouchEvent();
-
+/**
+ * function to send touch events
+ * @param	[int]	event file descriptor eg. /dev/input/event0
+ * @param	[int]	X axis
+ * @param	[int]	Y axis
+ */
+void sendTouchEvent(int &, int , int );
+/**
+ * function to initialize event pointer
+ * @param	[int]	input to file descriptor of event[out]
+ * @param	[char *]	name of device to which we are reading
+ */
+int initEventFD(int &, char *);
 /* TODO: Close fd on SIGINT (Ctrl-C), if it's open */
 int main(int argc, char *argv[])
 {
@@ -156,4 +166,29 @@ err:
 
 
 
+void sendTouchEvents(int &fd, int X, int Y)
+{
+	struct input_event ev;
+	ev.type =  EV_ABS;
+	ev.code = ABS_X;
+	ev.value = X;
 
+	//write X axis to file
+	write(fd, ev, sizeof(struct input_event));
+
+
+}
+
+int initEventFD(int &fd, char *name )
+{
+	fd = open(EVENT_DEVICE, O_RDWR);
+	if (fd == -1) {
+		fprintf(stderr, "%s is not a vaild device\n", EVENT_DEVICE);
+		return EXIT_FAILURE;
+	}
+
+	// Set name of device
+	ioctl(fd, EVIOCGNAME(sizeof(name)), name);
+	// init completed return success
+	return EXIT_SUCCESS;
+}
