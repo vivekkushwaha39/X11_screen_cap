@@ -7,8 +7,9 @@
 
 #include "X11Helper.h"
 #include <png.h>
+#include <linux/input.h>
 using namespace std;
-
+// TODO: send touch event on X=78 and Y=253
 
 
 X11Helper::X11Helper() {

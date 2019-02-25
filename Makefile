@@ -218,5 +218,10 @@ post-build:
 	@echo "==================================================="
 	@echo ""
 	@echo ""
-		
+
+mousetest:
+	$(CC) "src/testDir/mouseEventTerster.cpp" -o Output/miceTest.exe  $(LDFLAGS)
+
+eventtest:
+	$(CC) "src/testDir/eventTest.cpp" -o Output/eventTest.exe $(LDFLAGS)
 
