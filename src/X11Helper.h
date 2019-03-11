@@ -32,6 +32,14 @@ public:
 	bool SaveAsPng(std::string = "screencap.png");
 	int GetStatus();
 	virtual ~X11Helper();
+	/**
+	 * Send  event to Xorg
+	 * @param int Event Type
+	 * @param int 1st dependent param
+	 * @param int 2nd dependent param
+	 *  
+	 */
+	void sendEvent(int, int, int)
 
 };
 
