@@ -13,6 +13,8 @@ TARGET=$(BUILD_DIR)screencap.exe
 SRC_FILES=$(shell find "src/" -name "*.cpp") 
 OBJ_FILE_PATH=$(patsubst %.cpp, $(BUILD_DIR)%.o, $(SRC_FILES))
 
+LIBS=-lX11 -lpng
+
 $(BUILD_DIR)%.o: %.cpp
 	@echo "Compiling $@ from $^" 
 	$(CC) -c $^ -o $@
@@ -28,7 +30,7 @@ PREBUILD_STEPS:
 
 
 $(TARGET): $(OBJ_FILE_PATH)
-	$(CC) $(OBJ_FILE_PATH) -o $(TARGET)
+	$(CC) $(OBJ_FILE_PATH) -o $(TARGET) $(LIBS)
 
 
 print:

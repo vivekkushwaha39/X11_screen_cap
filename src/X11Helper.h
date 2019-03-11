@@ -12,6 +12,7 @@
 #include <iostream>
 #include <stdint.h>
 #include <syslog.h>
+#include <string.h>
 
 // STATUS CODES
 #define UNINITIALIZED 0x0

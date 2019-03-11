@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-int main(int argc, char** argv)
+int _main(int argc, char** argv)
 {
     int fd, bytes;
     unsigned char data[3];

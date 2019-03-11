@@ -112,7 +112,7 @@ void sendTouchEvent(int &, int , int );
  */
 int initEventFD(int &, char *);
 /* TODO: Close fd on SIGINT (Ctrl-C), if it's open */
-int main(int argc, char *argv[])
+int __main(int argc, char *argv[])
 {
     struct input_event ev;
     int fd;
