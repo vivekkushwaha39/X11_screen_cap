@@ -216,13 +216,14 @@ bool X11Helper::CloseDisplay()
 	return true;
 }
 
-void sendEvent(int evtType, int param1, int param2)
+void X11Helper::sendEvent(int evtType, int param1, int param2, int param3)
 {
 	XEvent event;
 	memset( &event, 0x00, sizeof(event) );
 	event.type = ButtonPress;
 	event.xbutton.button = button;
 	event.xbutton.same_screen = True;
-	XQueryPointer();
+	XQueryPointer(display, rootWindowDrawable,
+			&event.xbutton.root, &event.xbutton.window, &event.xbutton.    x_root, &event.xbutton.y_root, &event.xbutton.x, &event.xbutton.y, &event.xbutton.state);
 				
 }

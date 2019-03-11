@@ -39,7 +39,7 @@ public:
 	 * @param int 2nd dependent param
 	 *  
 	 */
-	void sendEvent(int, int, int)
+	void sendEvent(int, int, int, int);
 
 };
 

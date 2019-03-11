@@ -174,7 +174,7 @@ void sendTouchEvents(int &fd, int X, int Y)
 	ev.value = X;
 
 	//write X axis to file
-	write(fd, ev, sizeof(struct input_event));
+	//write(fd, ev, sizeof(struct input_event));
 
 
 }
