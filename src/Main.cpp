@@ -14,7 +14,7 @@
 #include <signal.h>
 
 #include "ScreenShareApp.h"
-
+#include "testDir/TestApp.h"
 using namespace std;
 /*int main(int argc, char **argv) {
 	Display * display1 = NULL;
@@ -125,9 +125,15 @@ void SignalHandler(int);
 ScreenShareApp app;
 int main(int argc, char **argv)
 {
+
+
+#ifndef DEBUG
 	signal(SIGILL | SIGABRT, SignalHandler);
 	app.StartCapturing();
-
+#else
+	TestApp tapp;
+	tapp.runTests();
+#endif
 	return 0;
 }
 
