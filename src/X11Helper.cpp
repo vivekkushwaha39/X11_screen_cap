@@ -218,12 +218,31 @@ bool X11Helper::CloseDisplay()
 
 void X11Helper::sendEvent(int evtType, int param1, int param2, int param3)
 {
+	int &x = param1;
+	int &y = param2;
+	int &buttonAscii = param3;
+
+	XWarpPointer(display, None, rootWindowDrawable, 0, 0, 0, 0, x, y);
+
 	XEvent event;
 	memset( &event, 0x00, sizeof(event) );
 	event.type = ButtonPress;
 	event.xbutton.button = param3;
 	event.xbutton.same_screen = True;
 	XQueryPointer(display, rootWindowDrawable,
-			&event.xbutton.root, &event.xbutton.window, &event.xbutton.    x_root, &event.xbutton.y_root, &event.xbutton.x, &event.xbutton.y, &event.xbutton.state);
+			&event.xbutton.root, &event.xbutton.window, &event.xbutton.x_root, &event.xbutton.y_root, &event.xbutton.x, &event.xbutton.y, &event.xbutton.state);
+
+	if(XSendEvent(display, PointerWindow, True, 0xfff, &event) == 0)
+		fprintf(stderr, "Error\n");
+
+	XFlush(display); // in order to send event flush the display
+
+	usleep(100000);
+	event.type = ButtonRelease;
+	event.xbutton.state = 0x100;
+	if(XSendEvent(display, PointerWindow, True, 0xfff, &event) == 0)
+		fprintf(stderr, "Error\n");
+
+	XFlush(display);
 				
 }

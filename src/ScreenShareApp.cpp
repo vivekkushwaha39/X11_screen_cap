@@ -17,6 +17,17 @@ ScreenShareApp::ScreenShareApp()
 
 ScreenShareApp::~ScreenShareApp()
 {
+	/* Delete all the Processors */
+	for ( vector<IScrenProcessor *>::iterator it = processors.begin();
+			it != processors.end(); it++)
+	{
+		if ( (*it) != NULL )
+		{
+			delete (*it);
+		}
+	}
+
+	x11Helper.CloseDisplay();
 }
 
 void ScreenShareApp::StartCapturing()
@@ -50,4 +61,9 @@ void ScreenShareApp::Signal(int data)
 {
 	syslog(LOG_DEBUG,  "clearing screen data");
 	x11Helper.CloseDisplay();
+}
+
+void ScreenShareApp::SendMouseEvent(int x, int y, int button)
+{
+	x11Helper.sendEvent(0, x, y, button);
 }
