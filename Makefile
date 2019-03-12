@@ -10,7 +10,7 @@ INC_DIR=src/			\
 BUILD_DIR=debug/
 
 TARGET=$(BUILD_DIR)screencap.exe
-SRC_FILES=$(shell find "src/" -name "*.cpp") 
+SRC_FILES=$(shell find "src/" -name "*.cpp" -type f) 
 OBJ_FILE_PATH=$(patsubst %.cpp, $(BUILD_DIR)%.o, $(SRC_FILES))
 
 LIBS=-lX11 -lpng
@@ -32,7 +32,8 @@ PREBUILD_STEPS:
 $(TARGET): $(OBJ_FILE_PATH)
 	$(CC) $(OBJ_FILE_PATH) -o $(TARGET) $(LIBS)
 
-
+clean: 
+	@rm -r debug
 print:
 	@echo $(SRC_FILES)
 	@echo $(OBJ_FILE_PATH)
