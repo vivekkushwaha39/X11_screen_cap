@@ -4,15 +4,14 @@
 CC=g++
 
 SRC_DIR=src/
-INC_DIR=src/			\
-		includes/
+INC_DIR=includes
 BUILD_DIR=debug/
 
 TARGET=$(BUILD_DIR)screencap.exe
 SRC_FILES=$(shell find "src/" -name "*.cpp" -type f) 
 OBJ_FILE_PATH=$(patsubst %.cpp, $(BUILD_DIR)%.o, $(SRC_FILES))
 
-COMPILER_FLAGS= -O0 -ggdb -DDEBUG
+COMPILER_FLAGS= -O0 -ggdb -DDEBUG -I$(INC_DIR)
 
 LIBS=-lX11 -lpng
 

@@ -6,16 +6,19 @@
  */
 
 #include "CommChannel.h"
-
+#include <string.h>
 CommChannel::CommChannel() {
+
 }
 
-CommChannel::~CommChannel() {
+CommChannel::~CommChannel()
+{
 	// TODO Auto-generated destructor stub
+	memset(&sock, 0x00, sizeof(sock));
 }
 
 bool CommChannel::Connect()
-{/*
+{
 	int retryCount = 0;
 	int isConnected = -1;
 	while ( retryCount++ < 100 && ( isConnected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) ) < 0  )
@@ -25,18 +28,18 @@ bool CommChannel::Connect()
 	}
 	if ( isConnected < 0 )
 		return false;
-	else*/
+	else
 		return true;
 }
 bool CommChannel::Disconnect()
 {
-	//close(socket);
+	close(sock);
 	return true;
 }
 
 bool CommChannel::Init()
 {
-	/*
+
 	bool res = true;
 
 	if ( (sock = socket(AF_INET, SOCK_STREAM, 0))  < 0 )
@@ -45,11 +48,11 @@ bool CommChannel::Init()
 		goto INIT_END;
 	}
 
-	serv_addr.sin_addr
+	serv_addr.sin_addr;
 
 
 INIT_END:
 	return res;
-*/
+
 	return true;
 }

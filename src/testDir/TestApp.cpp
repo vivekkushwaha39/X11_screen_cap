@@ -6,7 +6,7 @@
  */
 
 #include "TestApp.h"
-#include "../X11Helper.h"
+#include "X11Helper.h"
 TestApp::TestApp()
 {
 	// TODO Auto-generated constructor stub
@@ -31,6 +31,10 @@ void TestApp::testScreenCap()
 	x11helper.CaptureScreen();
 	x11helper.SaveAsPng();
 	x11helper.CloseDisplay();
+}
+void TestApp::testSockConnection()
+{
+
 }
 
 void TestApp::testSendEvent()

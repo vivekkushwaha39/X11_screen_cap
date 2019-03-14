@@ -15,6 +15,7 @@ public:
 	void testScreenCap();
 	virtual ~TestApp();
 	void testSendEvent();
+	void testSockConnection();
 };
 
 #endif /* SRC_TESTDIR_TESTAPP_H_ */

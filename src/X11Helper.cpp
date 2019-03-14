@@ -244,7 +244,7 @@ void X11Helper::sendEvent(int evtType, int param1, int param2, int param3)
 
 	if(XSendEvent(display, PointerWindow, True, 0xfff, &event) == 0)
 		fprintf(stderr, "Error\n");
-
+// Commenting this because we are sticking to clicked state
 //	XFlush(display); // in order to send event flush the display
 
 	usleep(100000);
