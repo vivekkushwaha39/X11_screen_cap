@@ -38,4 +38,5 @@ void TestApp::testSendEvent()
 	X11Helper x11helper;
 	x11helper.OpenDisplay();
 	x11helper.sendEvent(0, 200, 250, Button1);
+	x11helper.CloseDisplay();
 }

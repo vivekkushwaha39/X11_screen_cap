@@ -232,10 +232,20 @@ void X11Helper::sendEvent(int evtType, int param1, int param2, int param3)
 	XQueryPointer(display, rootWindowDrawable,
 			&event.xbutton.root, &event.xbutton.window, &event.xbutton.x_root, &event.xbutton.y_root, &event.xbutton.x, &event.xbutton.y, &event.xbutton.state);
 
+	event.xbutton.subwindow = event.xbutton.window;
+
+	while( event.xbutton.subwindow )
+	{
+		event.xbutton.window = event.xbutton.subwindow;
+		XQueryPointer(display, event.xbutton.window, &event.xbutton.root, &event.xbutton.subwindow, &event.xbutton.x_root, &    event.xbutton.y_root,
+				&event.xbutton.x, &event.xbutton.y, &event.xbutton.state);
+	}
+
+
 	if(XSendEvent(display, PointerWindow, True, 0xfff, &event) == 0)
 		fprintf(stderr, "Error\n");
 
-	XFlush(display); // in order to send event flush the display
+//	XFlush(display); // in order to send event flush the display
 
 	usleep(100000);
 	event.type = ButtonRelease;

@@ -1,7 +1,6 @@
 ################################################################
-# @author Vivek Kushwaha <vivekkushwaha39@gmail.com>
-#
-#
+# 		@author Vivek Kushwaha <vivekkushwaha39@gmail.com>     #
+################################################################
 CC=g++
 
 SRC_DIR=src/
