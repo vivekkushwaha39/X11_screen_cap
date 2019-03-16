@@ -7,6 +7,7 @@
 
 #include "TestApp.h"
 #include "X11Helper.h"
+#include "CommChannel.h"
 TestApp::TestApp()
 {
 	// TODO Auto-generated constructor stub
@@ -21,7 +22,8 @@ TestApp::~TestApp()
 void TestApp::runTests()
 {
 	// TEST screenCap
-	testSendEvent();
+//	testSendEvent();
+	testSockConnection();
 }
 
 void TestApp::testScreenCap()
@@ -34,7 +36,10 @@ void TestApp::testScreenCap()
 }
 void TestApp::testSockConnection()
 {
-
+	CommChannel comChannel;
+	comChannel.Init();
+	comChannel.Connect();
+	comChannel.Disconnect();
 }
 
 void TestApp::testSendEvent()
