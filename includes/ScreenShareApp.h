@@ -23,10 +23,22 @@ private:
 public:
 	ScreenShareApp();
 	virtual ~ScreenShareApp();
+	/**
+	 * Start capturing the screenshot
+	 */
 	void StartCapturing();
+	/**
+	 * Call image processors to process capturing png file
+	 */
 	void CallImageProcessors();
 	void Signal(int);
-
+	/**
+	 * Send mouse event to screen
+	 * @param int x axis
+	 * @param int y axis
+	 * @param int button (i.e left/right/middle)
+	 */
+	void SendMouseEvent(int, int, int);
 };
 
 #endif /* SRC_SCREENSHAREAPP_H_ */

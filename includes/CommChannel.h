@@ -13,10 +13,15 @@
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <syslog.h>
+
+#define COMMUNICATION_PORT 8989
+
 class CommChannel {
 private:
-	sockaddr_in serv_addr;
-	int sock;
+	sockaddr_in serv_addr, clientAddress;
+	int sock, clientSocket;
+	socklen_t clientSockLen;
 public:
 	CommChannel();
 	virtual ~CommChannel();
