@@ -29,7 +29,7 @@ public:
 	bool OpenDisplay();
 	bool CloseDisplay();
 	bool CaptureScreen();
-	bool SaveAsPng(std::string = "screencap.png");
+	bool SaveAsPng(std::string = "flash/screencap.png");
 	int GetStatus();
 	virtual ~X11Helper();
 

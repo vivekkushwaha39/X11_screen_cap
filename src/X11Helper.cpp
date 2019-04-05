@@ -8,6 +8,7 @@
 #include "X11Helper.h"
 #include <png.h>
 #include <linux/input.h>
+#include "debug.h"
 using namespace std;
 // TODO: send touch event on X=78 and Y=253
 
@@ -89,6 +90,8 @@ bool X11Helper::CaptureScreen()
 
 bool X11Helper::SaveAsPng(string fileName)
 {
+	bool status = true;
+
 	syslog(LOG_DEBUG, "saving screen");
 	if ( pXImg == NULL )
 	{
@@ -98,7 +101,7 @@ bool X11Helper::SaveAsPng(string fileName)
 	}
 
 	if ( fileName.compare("") == 0 )
-		fileName = "screencap.png";
+		fileName = "flash/screencap.png";
 
 	bool isSaved = false;
 
@@ -135,27 +138,40 @@ bool X11Helper::SaveAsPng(string fileName)
 
 
 		FILE *outFile = fopen(fileName.c_str(), "wb");
-
+		if ( !outFile )
+		{
+			cout<<"Unable to open file "<<fileName.c_str();
+			png_destroy_write_struct(&pngPtr, &pngInfoPtr);
+			return false;
+		}
+		cout<<"File is created"<<endl;
 		png_set_IHDR (pngPtr, pngInfoPtr, rootWindowAttr.width, rootWindowAttr.height,
 		     8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
 		     PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 
 
 		png_init_io(pngPtr, outFile);
-
+		cout<<"Png initio completed"<<endl;
 		char *title = "ScreenShot";
 		png_text pngText;
-		pngText.compression = PNG_ITXT_COMPRESSION_NONE;
+		pngText.compression = PNG_TEXT_COMPRESSION_NONE;
 		pngText.key = "Title";
-		pngText.text = title;
+		pngText.text = "Screencap" ;
+		pngText.text_length = 9;
 		png_set_text(pngPtr, pngInfoPtr, &pngText, 1);
 		png_write_info(pngPtr, pngInfoPtr);
 
+		cout<<"Info is written"<<endl;
 
 		png_bytepp png_row_col = (png_bytepp) png_malloc(pngPtr, rootWindowAttr.height * sizeof (png_bytep));
 		for ( int x = 0; x < rootWindowAttr.height; x++ )
 		{
 			png_bytep png_row = (png_bytep)png_malloc (pngPtr, sizeof (uint8_t) * rootWindowAttr.width * 24 );
+
+			if ( png_row == NULL )
+			{
+				SET_STATUS_BREAK(status)
+			}
 
 			png_row_col[x] = png_row;
 
@@ -174,8 +190,25 @@ bool X11Helper::SaveAsPng(string fileName)
 			}
 
 		}
+
+
+		cout<<"Converted data to PNG pixel"<<endl;
+
+		if ( status == false)
+		{
+			for ( int y = 0; y < rootWindowAttr.height; y++ )
+			{
+				png_free (pngPtr, png_row_col[y]);
+			}
+
+			if (pngInfoPtr != NULL) png_free_data (pngPtr, pngInfoPtr, PNG_FREE_ALL, -1);
+			if (pngPtr != NULL) png_destroy_write_struct (&pngPtr, (png_infopp)NULL);
+			return false;
+		}
+
 		png_set_rows(pngPtr, pngInfoPtr, png_row_col);
 		png_write_png(pngPtr, pngInfoPtr, PNG_TRANSFORM_IDENTITY, NULL);
+
 
 		for ( int y = 0; y < rootWindowAttr.height; y++ )
 		{
@@ -184,6 +217,7 @@ bool X11Helper::SaveAsPng(string fileName)
 		png_free (pngPtr, png_row_col);
 
 		fclose (outFile);
+		cout<<"closing file "<<endl;
 		if (pngInfoPtr != NULL) png_free_data (pngPtr, pngInfoPtr, PNG_FREE_ALL, -1);
 		if (pngPtr != NULL) png_destroy_write_struct (&pngPtr, (png_infopp)NULL);
 

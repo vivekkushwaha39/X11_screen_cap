@@ -11,13 +11,13 @@
 
 # Executable name and location
 TARGET_DIR :=  output
-TARGET     :=  $(TARGET_DIR)/Evpay.exe
+TARGET     :=  $(TARGET_DIR)/x11.exe
 
 # ADK and SDK versions
 ADK_VERSION  :=  adk-full-4.4.10-376
 # adk-full-4.4.9-370
 # adk-full-4.5.2-281
-SDK_VERSION  :=  vos2-sdk-winx86-release-30811500
+SDK_VERSION  :=  vos2-sdk-winx86-release-30811501
 # vos2-sdk-winx86-release-30811400
 # vos2-sdk-winx86-release-30920300
 

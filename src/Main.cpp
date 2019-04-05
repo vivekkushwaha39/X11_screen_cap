@@ -126,6 +126,7 @@ ScreenShareApp app;
 int main(int argc, char **argv)
 {
 	signal(SIGILL | SIGABRT, SignalHandler);
+	cout<<"starting app";
 	app.StartCapturing();
 
 	return 0;
